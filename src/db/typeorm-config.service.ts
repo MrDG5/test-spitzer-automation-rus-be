@@ -27,7 +27,11 @@ export class TypeOrmConfig implements TypeOrmOptionsFactory {
       keepConnectionAlive: true,
       entities: [__dirname + '/../**/*.entity{.ts,.js}'],
       migrations: [__dirname + '/migrations/**/*{.ts,.js}'],
-      // cli: {} // TODO: make cli for migrations
+      cli: {
+        entitiesDir: 'src',
+        migrationsDir: 'src/db/migrations',
+        subscribersDir: 'subscriber',
+      },
       uuidExtension: 'uuid-ossp',
       autoLoadEntities: true,
       namingStrategy: new SnakeNamingStrategy(),

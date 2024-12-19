@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UsersModule } from './users/users.module';
+import { ClientsModule } from './clients/clients.module';
 import { ConfigModule } from '@nestjs/config';
 import appConfig from './config/app.config';
 import dbConfig from './config/db.config';
@@ -23,7 +23,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
         return new DataSource(option).initialize();
       },
     }),
-    UsersModule,
+    ClientsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

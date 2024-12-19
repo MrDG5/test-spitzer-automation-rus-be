@@ -7,15 +7,15 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
+import { ClientsService } from './clients.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 
 @Controller('users')
 @ApiTags('Users')
-export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+export class ClientsController {
+  constructor(private readonly usersService: ClientsService) {}
 
   @Post()
   @ApiOperation({ summary: 'Create a new user' })

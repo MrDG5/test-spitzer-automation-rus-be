@@ -1,14 +1,26 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
+
+const NestLogger = new Logger('NestApplication');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  const GLOBAL_APP_PREFIX = 'api'; // TODO: add prefix to env
-  app.setGlobalPrefix(GLOBAL_APP_PREFIX);
+  // Config
+  const configService = app.get(ConfigService);
+  const NODE_ENV = configService.getOrThrow('app.nodeEnv');
+  const API_HOST = configService.getOrThrow('app.apiHost');
+  const API_PORT = configService.getOrThrow('app.apiPort');
+  const GLOBAL_API_PREFIX = configService.getOrThrow('app.apiPrefix');
+
+  app.setGlobalPrefix(GLOBAL_API_PREFIX);
 
   // Swagger
+  const SWAGGER_PATH = GLOBAL_API_PREFIX + '/api-docs';
+
   const swgrDocConfig = new DocumentBuilder()
     .setTitle('Test Spitzer Automation RUS BE')
     .setDescription('API Documentation')
@@ -22,10 +34,15 @@ async function bootstrap() {
 
   const swgrDocument = SwaggerModule.createDocument(app, swgrDocConfig);
 
-  const SWAGGER_PATH = 'api-docs'; // TODO: add to env
   SwaggerModule.setup(SWAGGER_PATH, app, swgrDocument);
 
-  const API_PORT = 3000; // TODO: add to env
-  await app.listen(API_PORT);
+  await app.listen(API_PORT, API_HOST, async () => {
+    const appUrl = await app.getUrl();
+    NestLogger.log(`🚀 Server NestApi running. Application on url: ${appUrl}`);
+    NestLogger.log(`📗 Swagger url: ${SWAGGER_PATH}`);
+    NestLogger.log(
+      `✨ ${API_HOST}:${API_PORT} | mode: ${NODE_ENV} | pid: ${process.pid}`,
+    );
+  });
 }
 bootstrap();

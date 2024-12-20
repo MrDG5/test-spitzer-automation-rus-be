@@ -1,39 +1,54 @@
-import { Controller, Get, Post, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Param,
+  Delete,
+  Body,
+  Query,
+  Put,
+} from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { CreateClientDto } from './dto/create-client.dto';
+import { FindClientDto } from './dto/find-client.dto';
+import { UpdateClientDto } from './dto/update-client.dto';
+import { ClientUuidDto } from './dto/client-uuid.dto';
 
 @Controller('users')
 @ApiTags('Users')
 export class ClientsController {
   constructor(private readonly usersService: ClientsService) {}
 
-  @Post()
-  @ApiOperation({ summary: 'Create a new user' })
-  create() {
-    return this.usersService.create();
-  }
-
   @Get()
-  @ApiOperation({ summary: 'Get all users' })
-  findAll() {
+  @ApiOperation({ summary: 'Get all clients' })
+  find(@Query() emailOrUuid: FindClientDto) {
+    if (emailOrUuid.email)
+      return this.usersService.findOneByEmail(emailOrUuid.email);
+
+    if (emailOrUuid.id) return this.usersService.findOne(emailOrUuid.id);
+
     return this.usersService.findAll();
   }
 
-  @Get(':id')
-  @ApiOperation({ summary: 'Get one user' })
-  findOne(@Param('id') id: string) {
-    return this.usersService.findOne(+id);
+  @Post()
+  @ApiOperation({ summary: 'Create a new client' })
+  create(@Body() createClientDto: CreateClientDto) {
+    return this.usersService.create(createClientDto);
   }
 
-  @Patch(':id')
-  @ApiOperation({ summary: 'Edit an existing user' })
-  update(@Param('id') id: string) {
-    return this.usersService.update(+id);
+  @Put(':id')
+  @ApiOperation({ summary: 'Edit an existing client' })
+  update(
+    @Param() param: ClientUuidDto,
+    @Body() newClientParams: UpdateClientDto,
+  ) {
+    return this.usersService.update(param.id, newClientParams);
   }
 
   @Delete(':id')
-  @ApiOperation({ summary: 'Delete user' })
-  remove(@Param('id') id: string) {
-    return this.usersService.remove(+id);
+  @ApiOperation({ summary: 'Delete client' })
+  remove(@Param() param: ClientUuidDto) {
+    return this.usersService.remove(param.id);
   }
 }

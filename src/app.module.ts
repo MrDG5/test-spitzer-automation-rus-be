@@ -8,6 +8,8 @@ import dbConfig from './config/db.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from './db/typeorm-config.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
+import { APP_FILTER } from '@nestjs/core';
+import { HttpErrorFilter } from './common/http-error.filter';
 
 @Module({
   imports: [
@@ -26,6 +28,12 @@ import { DataSource, DataSourceOptions } from 'typeorm';
     ClientsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [
+    AppService,
+    {
+      provide: APP_FILTER,
+      useClass: HttpErrorFilter,
+    },
+  ],
 })
 export class AppModule {}

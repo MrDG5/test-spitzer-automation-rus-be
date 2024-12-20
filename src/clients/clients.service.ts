@@ -1,12 +1,23 @@
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { ClientsEntity } from 'src/db/entities/clients.entity';
+import { Repository } from 'typeorm';
 import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ClientsService {
-  constructor() {}
+  constructor(
+    @InjectRepository(ClientsEntity)
+    private readonly clientsRepository: Repository<ClientsEntity>,
+  ) {}
 
   create() {
-    return 'This action create new user';
+    return this.clientsRepository.save({
+      id: uuidv4(),
+      name: 'Vasia',
+      email: 'vasia.pupkin@automation.ru',
+      amount: 123,
+    });
   }
 
   findAll() {

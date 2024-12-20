@@ -2,7 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { ConfigService } from '@nestjs/config';
-import { Logger } from '@nestjs/common';
+import { Logger, ValidationPipe } from '@nestjs/common';
+import validationPipeOptions from './common/validation-pipe.option';
 
 const NestLogger = new Logger('NestApplication');
 
@@ -17,6 +18,7 @@ async function bootstrap() {
   const GLOBAL_API_PREFIX = configService.getOrThrow('app.apiPrefix');
 
   app.setGlobalPrefix(GLOBAL_API_PREFIX);
+  app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
 
   // Swagger
   const SWAGGER_PATH = GLOBAL_API_PREFIX + '/api-docs';

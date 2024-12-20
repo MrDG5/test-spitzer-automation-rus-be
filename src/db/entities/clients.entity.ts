@@ -1,4 +1,12 @@
-import { Check, Column, Entity, PrimaryColumn, Unique } from 'typeorm';
+import {
+  BeforeInsert,
+  Check,
+  Column,
+  Entity,
+  PrimaryColumn,
+  Unique,
+} from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 
 @Entity({
   schema: 'public',
@@ -6,7 +14,7 @@ import { Check, Column, Entity, PrimaryColumn, Unique } from 'typeorm';
 })
 @Unique(['email'])
 @Check('amount <> 0')
-export class Clients {
+export class ClientsEntity {
   @PrimaryColumn({ type: 'uuid' })
   id: string;
 

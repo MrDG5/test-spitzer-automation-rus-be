@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { v4 as uuidv4 } from 'uuid';
 
 @Injectable()
 export class ClientsService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor() {}
+
+  create() {
+    return 'This action create new user';
   }
 
   findAll() {
@@ -16,7 +17,7 @@ export class ClientsService {
     return `This action returns a #${id} user`;
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
+  update(id: number) {
     return `This action updates a #${id} user`;
   }
 

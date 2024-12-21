@@ -89,4 +89,10 @@ export class ClientsService {
 
     return this.clientsRepository.delete(existClient);
   }
+
+  async getAmountSum() {
+    return this.clientsRepository.sum('amount').then((res) => ({
+      clientAmountSum: res ?? 0,
+    }));
+  }
 }

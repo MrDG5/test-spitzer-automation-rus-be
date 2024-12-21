@@ -1,12 +1,5 @@
-import {
-  BeforeInsert,
-  Check,
-  Column,
-  Entity,
-  PrimaryColumn,
-  Unique,
-} from 'typeorm';
-import { v4 as uuidv4 } from 'uuid';
+import { Transform } from 'class-transformer';
+import { Check, Column, Entity, PrimaryColumn, Unique } from 'typeorm';
 
 @Entity({
   schema: 'public',
@@ -24,6 +17,16 @@ export class ClientsEntity {
   @Column({ type: 'text' })
   email: string;
 
-  @Column({ type: 'numeric' })
+  @Column({
+    type: 'numeric',
+    transformer: {
+      from(dbNumeric: string): number {
+        return Number(dbNumeric);
+      },
+      to(entityValue: number) {
+        return entityValue;
+      },
+    },
+  })
   amount: number;
 }

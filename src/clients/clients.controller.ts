@@ -20,6 +20,12 @@ import { ClientUuidDto } from './dto/client-uuid.dto';
 export class ClientsController {
   constructor(private readonly usersService: ClientsService) {}
 
+  @Get('amount-sum')
+  @ApiOperation({ summary: "Get total amount client's sum" })
+  findAmountSum() {
+    return this.usersService.getAmountSum();
+  }
+
   @Get()
   @ApiOperation({ summary: 'Get all clients' })
   find(@Query() emailOrUuid: FindClientDto) {

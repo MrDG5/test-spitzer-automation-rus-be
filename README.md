@@ -17,17 +17,6 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
-## Database Migrations
-```bash
-# to generate new migration
-$pnpm migration:generate ./src/db/migrations/<snapshot_name>
-```
-
-```bash
-# to apply existing migrations to the current database
-$pnpm migration:run
-```
-
 ## Что за проект
 Данный проект сделан в рамках тестового задания
 ## Тестовое задание на должность backend разработчик

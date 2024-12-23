@@ -28,6 +28,7 @@ export class UsersController {
   @Get(':email')
   @ApiOperation({ summary: 'Get user by email' })
   async findOne(@Param() params: UserEmailDto) {
+    /* TODO: удалить у пользователей полей пароль, чтобы оно не возвращалось на клиент */
     return this.usersService.findOneByEmail(params.email);
   }
 

@@ -10,6 +10,7 @@ import { TypeOrmConfig } from './db/typeorm-config.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from './common/http-error.filter';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { HttpErrorFilter } from './common/http-error.filter';
       },
     }),
     ClientsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [

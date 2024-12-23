@@ -1,4 +1,3 @@
-import { Transform } from 'class-transformer';
 import { Check, Column, Entity, PrimaryColumn, Unique } from 'typeorm';
 
 @Entity({

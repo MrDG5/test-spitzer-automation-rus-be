@@ -6,7 +6,7 @@ import {
   Delete,
   Body,
   Query,
-  Put,
+  Patch,
 } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -15,8 +15,8 @@ import { FindClientDto } from './dto/find-client.dto';
 import { UpdateClientDto } from './dto/update-client.dto';
 import { ClientUuidDto } from './dto/client-uuid.dto';
 
-@Controller('users')
-@ApiTags('Users')
+@Controller('clients')
+@ApiTags('Clients')
 export class ClientsController {
   constructor(private readonly usersService: ClientsService) {}
 
@@ -43,7 +43,7 @@ export class ClientsController {
     return this.usersService.create(createClientDto);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @ApiOperation({ summary: 'Edit an existing client' })
   update(
     @Param() param: ClientUuidDto,

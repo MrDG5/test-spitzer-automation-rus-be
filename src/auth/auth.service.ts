@@ -3,12 +3,14 @@ import { UsersService } from 'src/users/users.service';
 import * as bcript from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPaylodaType } from './types/jwt-payloda.type';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    private readonly configService: ConfigService,
   ) {}
 
   async validateUser(email: string, password: string) {
@@ -45,7 +47,7 @@ export class AuthService {
   async verifyJwt(jwt: string) {
     try {
       const payload = await this.jwtService.verifyAsync(jwt, {
-        secret: 'JWT-ACCESS-TOKEN-SECRET', //TODO: убрать в .env
+        secret: this.configService.get<string>('secret.jwtAccesTokenSecret'),
       });
       return payload;
     } catch (error) {

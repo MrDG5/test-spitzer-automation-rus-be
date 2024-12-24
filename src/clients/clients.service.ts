@@ -38,15 +38,6 @@ export class ClientsService {
       );
     }
 
-    // TODO: у меня почему какбудто запускаются транзакции
-    /* в консоль выводиться вот это (может поменять что-то в typworm.config.ts)
-    query: START TRANSACTION
-    query: INSERT INTO "public"."Clients"("id", "name", "email", "amount") 
-           VALUES ($1, $2, $3, $4) 
-           -- PARAMETERS: ["545a06fc-bc37-4659-98c2-1ee695eb76f9","Vasia","vasia.pupkin@automation.com",2]
-    query: COMMIT
-    */
-
     return this.clientsRepository.save({
       ...createClientDto,
       id: uuid.v4(),

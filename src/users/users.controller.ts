@@ -23,16 +23,8 @@ export class UsersController {
   @Get()
   @Roles('admin')
   @ApiOperation({ summary: 'Get all users' })
-  async findAll() {
-    const users = await this.usersService.findAll();
-
-    const userWithoutPass = users.map((user) => {
-      const { password, ...userWithoutPass } = user;
-
-      return userWithoutPass;
-    });
-
-    return userWithoutPass;
+  findAll() {
+    return this.usersService.findAll();
   }
 
   @Get(':email')

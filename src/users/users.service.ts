@@ -20,11 +20,16 @@ export class UsersService {
     private readonly usersRepository: Repository<UsersEntity>,
   ) {}
 
-  findAll() {
-    return this.usersRepository.find();
-  }
+  async findAll() {
+    const users = await this.usersRepository.find();
 
-  // TODO: настроить получение пользователя без пароля
+    const usersWithoutPass = users.map((user) => {
+      const { password, ...userWithoutPass } = user;
+      return userWithoutPass;
+    });
+
+    return usersWithoutPass;
+  }
 
   async findOne(opts: UserFindOptions) {
     const user = opts.uuid

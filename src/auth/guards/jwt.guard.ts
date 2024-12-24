@@ -3,6 +3,7 @@ import { Reflector } from '@nestjs/core';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPaylodaType } from '../types/jwt-payloda.type';
 import { UsersService } from 'src/users/users.service';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class JwtGuard implements CanActivate {
@@ -10,6 +11,7 @@ export class JwtGuard implements CanActivate {
     private readonly reflector: Reflector,
     private readonly jwtService: JwtService,
     private readonly usersSevice: UsersService,
+    private readonly configService: ConfigService,
   ) {}
 
   async canActivate(context: ExecutionContext) {
@@ -22,7 +24,9 @@ export class JwtGuard implements CanActivate {
         const tokenPayload: JwtPaylodaType = await this.jwtService.verifyAsync(
           jwtToken,
           {
-            secret: 'JWT-ACCESS-TOKEN-SECRET', //TODO: убрать в .env
+            secret: this.configService.get<string>(
+              'secret.jwtAccesTokenSecret',
+            ),
           },
         );
         const user = await this.usersSevice.findOneWithoutPassword({

@@ -14,6 +14,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { JwtGuard } from './auth/guards/jwt.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
+import secretConfig from './config/secret.config';
 
 @Module({
   imports: [
@@ -21,7 +22,7 @@ import { RolesGuard } from './auth/guards/roles.guard';
       cache: false,
       envFilePath: '.env',
       isGlobal: true,
-      load: [appConfig, dbConfig],
+      load: [appConfig, dbConfig, secretConfig],
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfig,

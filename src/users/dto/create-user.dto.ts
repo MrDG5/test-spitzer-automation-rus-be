@@ -6,7 +6,7 @@ import {
   IsString,
   MinLength,
 } from 'class-validator';
-import { UserRoles } from 'src/db/entities/users.entity';
+import { UserRoles, UserRolesType } from 'src/db/entities/users.entity';
 
 export class CreateUserDto {
   @ApiProperty({ required: true })
@@ -22,5 +22,5 @@ export class CreateUserDto {
 
   @ApiProperty({ required: true })
   @IsEnum(UserRoles, { each: true })
-  roles: `${UserRoles}`[];
+  roles: UserRolesType[];
 }

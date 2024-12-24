@@ -6,6 +6,8 @@ export enum UserRoles {
   unknown = 'unknown',
 }
 
+export type UserRolesType = `${UserRoles}`;
+
 @Entity({
   schema: 'public',
   name: 'Users',
@@ -21,6 +23,7 @@ export class UsersEntity {
   @Column({ type: 'text' })
   password: string;
 
+  //TODO: Убрать
   @Column({ type: 'text', nullable: true })
   refreshToken: string;
 

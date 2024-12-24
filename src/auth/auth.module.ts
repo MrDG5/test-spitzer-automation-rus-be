@@ -9,7 +9,7 @@ import { JwtModule } from '@nestjs/jwt';
     UsersModule,
     JwtModule.register({
       global: true,
-      secret: 'JWT-ACCESS-TOKEN-SECRET',
+      secret: 'JWT-ACCESS-TOKEN-SECRET', //TODO: убрать в .env
       signOptions: { expiresIn: '2m' },
     }),
   ],

@@ -35,11 +35,10 @@ export class UsersController {
 
   @Get(':email')
   @ApiOperation({ summary: 'Get user by email' })
-  async findOne(@Param() params: UserEmailDto) {
-    const { password, ...userWithoutPass } =
-      await this.usersService.findOneByEmail(params.email);
-
-    return userWithoutPass;
+  findOne(@Param() params: UserEmailDto) {
+    return this.usersService.findOneWithoutPassword({
+      email: params.email,
+    });
   }
 
   @Post()

@@ -7,6 +7,12 @@ import { EditUserDto } from './dto/edit-user.dto';
 import * as uuid from 'uuid';
 import * as bcrypt from 'bcrypt';
 
+type UserFindOptions = (
+  | { uuid: string; email?: never }
+  | { uuid?: never; email: string }
+  | { uuid: string; email: string }
+) & { withoutException?: true };
+
 @Injectable()
 export class UsersService {
   constructor(
@@ -18,13 +24,17 @@ export class UsersService {
     return this.usersRepository.find();
   }
 
-  async findOne(uuid: string) {
-    const user = await this.usersRepository.findOneBy({ id: uuid });
+  // TODO: настроить получение пользователя без пароля
 
-    if (!user) {
+  async findOne(opts: UserFindOptions) {
+    const user = opts.uuid
+      ? await this.usersRepository.findOneBy({ id: opts.uuid })
+      : await this.usersRepository.findOneBy({ email: opts.email });
+
+    if (!opts.withoutException && !user) {
       throw new HttpException(
         {
-          message: 'There is no user in DB with this uuid',
+          message: `There is no user in DB with this ${opts.uuid ? 'uuid' : 'email'}`,
           error: 'Missing data error',
         },
         HttpStatus.BAD_REQUEST,
@@ -34,20 +44,12 @@ export class UsersService {
     return user;
   }
 
-  async findOneByEmail(email: string, withoutException = false) {
-    const user = await this.usersRepository.findOneBy({ email: email });
+  async findOneWithoutPassword(opts: UserFindOptions) {
+    const user = await this.findOne(opts);
 
-    if (!withoutException && !user) {
-      throw new HttpException(
-        {
-          message: 'There is no user in DB with this email',
-          error: 'Missing data error',
-        },
-        HttpStatus.BAD_REQUEST,
-      );
-    }
+    const { password, ...userWithoutPass } = user;
 
-    return user;
+    return userWithoutPass;
   }
 
   async create(newUser: CreateUserDto) {
@@ -73,7 +75,7 @@ export class UsersService {
   }
 
   async edit(userUuid: string, filedsToEdit: EditUserDto) {
-    const userToEdit = await this.findOne(userUuid);
+    const userToEdit = await this.findOne({ uuid: userUuid });
 
     const updatedUser = { ...userToEdit, ...filedsToEdit };
 

@@ -15,6 +15,21 @@ export class AddClientTable1734621248547 implements MigrationInterface {
         CONSTRAINT "PK_8dadaa0dc6305d95e1d1a6b9544" PRIMARY KEY ("id")
     )`,
     );
+
+    await queryRunner.query(
+      `INSERT INTO "public"."Clients"(
+         	"id",
+         	"name",
+         	"email",
+         	"amount"
+       )
+       VALUES 
+       ('04b263ca-537f-46c8-8ae6-74a3e6355516', 'Bob',	'bob@automation.rus', 1),
+       ('92aff15d-febc-47db-a48e-aa4f1c276a6b', 'Аlex', 'alex@automation.rus', 12),
+       ('6b378acc-5948-4c5e-ae65-d412c6d7b037', 'Аlisa', 'alisa@automation.rus', -21),
+       ('718968a4-2eeb-49bd-b3b9-19b7538a33c2', 'John', 'john@automation.rus', 2),
+       ('02541a7a-d463-4690-ba54-7fce7c77c865', 'Kate', 'kate@automation.rus', 3)`,
+    );
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {

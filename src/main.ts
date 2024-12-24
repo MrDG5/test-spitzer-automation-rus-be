@@ -32,6 +32,7 @@ async function bootstrap() {
       in: 'Header',
       bearerFormat: 'JWT',
     })
+    .addSecurityRequirements('bearer')
     .build();
 
   const swgrDocument = SwaggerModule.createDocument(app, swgrDocConfig);

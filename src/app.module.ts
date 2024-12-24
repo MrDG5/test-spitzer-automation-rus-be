@@ -8,8 +8,13 @@ import dbConfig from './config/db.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmConfig } from './db/typeorm-config.service';
 import { DataSource, DataSourceOptions } from 'typeorm';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { HttpErrorFilter } from './common/http-error.filter';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { JwtGuard } from './auth/guards/jwt.guard';
+import { RolesGuard } from './auth/guards/roles.guard';
+import secretConfig from './config/secret.config';
 
 @Module({
   imports: [
@@ -17,7 +22,7 @@ import { HttpErrorFilter } from './common/http-error.filter';
       cache: false,
       envFilePath: '.env',
       isGlobal: true,
-      load: [appConfig, dbConfig],
+      load: [appConfig, dbConfig, secretConfig],
     }),
     TypeOrmModule.forRootAsync({
       useClass: TypeOrmConfig,
@@ -25,7 +30,9 @@ import { HttpErrorFilter } from './common/http-error.filter';
         return new DataSource(option).initialize();
       },
     }),
+    AuthModule,
     ClientsModule,
+    UsersModule,
   ],
   controllers: [AppController],
   providers: [
@@ -33,6 +40,14 @@ import { HttpErrorFilter } from './common/http-error.filter';
     {
       provide: APP_FILTER,
       useClass: HttpErrorFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: JwtGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })

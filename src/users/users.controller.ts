@@ -21,15 +21,25 @@ export class UsersController {
 
   @Get()
   @ApiOperation({ summary: 'Get all users' })
-  findAll() {
-    return this.usersService.findAll();
+  async findAll() {
+    const users = await this.usersService.findAll();
+
+    const userWithoutPass = users.map((user) => {
+      const { password, ...userWithoutPass } = user;
+
+      return userWithoutPass;
+    });
+
+    return userWithoutPass;
   }
 
   @Get(':email')
   @ApiOperation({ summary: 'Get user by email' })
   async findOne(@Param() params: UserEmailDto) {
-    /* TODO: удалить у пользователей полей пароль, чтобы оно не возвращалось на клиент */
-    return this.usersService.findOneByEmail(params.email);
+    const { password, ...userWithoutPass } =
+      await this.usersService.findOneByEmail(params.email);
+
+    return userWithoutPass;
   }
 
   @Post()

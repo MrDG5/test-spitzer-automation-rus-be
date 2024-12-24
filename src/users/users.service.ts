@@ -3,8 +3,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { UsersEntity } from 'src/db/entities/users.entity';
 import { Repository } from 'typeorm';
 import { CreateUserDto } from './dto/create-user.dto';
-import * as uuid from 'uuid';
 import { EditUserDto } from './dto/edit-user.dto';
+import * as uuid from 'uuid';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -33,10 +34,10 @@ export class UsersService {
     return user;
   }
 
-  async findOneByEmail(email: string) {
+  async findOneByEmail(email: string, withoutException = false) {
     const user = await this.usersRepository.findOneBy({ email: email });
 
-    if (!user) {
+    if (!withoutException && !user) {
       throw new HttpException(
         {
           message: 'There is no user in DB with this email',
@@ -64,7 +65,11 @@ export class UsersService {
       );
     }
 
-    return this.usersRepository.save({ ...newUser, id: uuid.v4() });
+    return this.usersRepository.save({
+      ...newUser,
+      id: uuid.v4(),
+      password: await bcrypt.hash(newUser.password, 10),
+    });
   }
 
   async edit(userUuid: string, filedsToEdit: EditUserDto) {

@@ -11,6 +11,7 @@ import { DataSource, DataSourceOptions } from 'typeorm';
 import { APP_FILTER } from '@nestjs/core';
 import { HttpErrorFilter } from './common/http-error.filter';
 import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import { UsersModule } from './users/users.module';
         return new DataSource(option).initialize();
       },
     }),
+    AuthModule,
     ClientsModule,
     UsersModule,
   ],

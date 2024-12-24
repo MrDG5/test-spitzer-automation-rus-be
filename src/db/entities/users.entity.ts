@@ -23,10 +23,6 @@ export class UsersEntity {
   @Column({ type: 'text' })
   password: string;
 
-  //TODO: Убрать
-  @Column({ type: 'text', nullable: true })
-  refreshToken: string;
-
   @Column({ type: 'text', array: true, default: `{${UserRoles.user}}` })
   roles: string[];
 }

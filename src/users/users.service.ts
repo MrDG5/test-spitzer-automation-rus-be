@@ -72,11 +72,13 @@ export class UsersService {
       );
     }
 
-    return this.usersRepository.save({
+    const savedUser = await this.usersRepository.save({
       ...newUser,
       id: uuid.v4(),
       password: await bcrypt.hash(newUser.password, 10),
     });
+
+    return this.findOneWithoutPassword({ uuid: savedUser.id });
   }
 
   async edit(userUuid: string, filedsToEdit: EditUserDto) {

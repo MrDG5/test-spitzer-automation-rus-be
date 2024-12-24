@@ -14,22 +14,26 @@ export class JwtGuard implements CanActivate {
 
   async canActivate(context: ExecutionContext) {
     const request = context.switchToHttp().getRequest();
-    const jwtToken: string | undefined = request.headers['authorization'];
+    const authHeader: string | undefined = request.headers['authorization'];
+    const jwtToken = authHeader?.split(' ')[1];
 
     if (jwtToken) {
-      // TODO: сделать тип закодированного токена
-      const tokenPayload: JwtPaylodaType = await this.jwtService.verifyAsync(
-        jwtToken,
-        {
-          secret: 'JWT-ACCESS-TOKEN-SECRET', //TODO: убрать в .env
-        },
-      );
-      const user = await this.usersSevice.findOneWithoutPassword({
-        email: tokenPayload.userEmail,
-        withoutException: true,
-      });
+      try {
+        const tokenPayload: JwtPaylodaType = await this.jwtService.verifyAsync(
+          jwtToken,
+          {
+            secret: 'JWT-ACCESS-TOKEN-SECRET', //TODO: убрать в .env
+          },
+        );
+        const user = await this.usersSevice.findOneWithoutPassword({
+          email: tokenPayload.userEmail,
+          withoutException: true,
+        });
 
-      request.user = user;
+        request.user = user;
+      } catch (error) {
+        request.user = null;
+      }
     } else {
       request.user = null;
     }

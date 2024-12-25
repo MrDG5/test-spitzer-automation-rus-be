@@ -17,6 +17,39 @@ $ pnpm run start:dev
 $ pnpm run start:prod
 ```
 
+## Database Migrations
+```bash
+# to generate new migration
+$ pnpm migration:generate ./src/db/migrations/<snapshot_name>
+```
+
+```bash
+# to apply existing migrations to the current database
+$ pnpm migration:run
+```
+
+## Docker deploy
+```bash
+# to run app in container with db
+$ docker compose up --build
+```
+
+```bash
+# to stop db and app container
+$ docker compose up --build
+```
+
+## Первый запуск (login)
+Чтобы авторизироваться можно использовать данную учётку:
+```json
+{
+  "email": "admin@test.com",
+  "password": "admin"
+}
+```
+После чего получим `accessToken`
+
+
 ## Что за проект
 Данный проект сделан в рамках тестового задания
 ## Тестовое задание на должность backend разработчик

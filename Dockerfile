@@ -4,18 +4,13 @@ RUN npm i -g pnpm
 
 WORKDIR /test-spitzer-automation-rus-be
 
-# Копируем package.json и package-lock.json (или yarn.lock)
 COPY package*.json ./
 
 RUN  pnpm fetch
 RUN  pnpm i
 
-# Копируем все файлы приложения
 COPY . .
 
-# Устанавливаем зависимости + миграции + собираем проект
 RUN  pnpm build
-# RUN  pnpm migration:run
 
-# Команда для запуска приложения
-CMD ["pnpm", "start:prod"]
+CMD ["sh", "-c", "pnpm migration:run && pnpm start:prod"]

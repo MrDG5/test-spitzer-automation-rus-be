@@ -1,0 +1,13 @@
+node_modules
+dist
+dist-*
+.vscode
+
+.dockerignore
+
+.git
+.gitignore
+
+.editorconfig
+
+readme.md

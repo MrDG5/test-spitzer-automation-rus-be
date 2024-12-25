@@ -20,6 +20,14 @@ async function bootstrap() {
   app.setGlobalPrefix(GLOBAL_API_PREFIX);
   app.useGlobalPipes(new ValidationPipe(validationPipeOptions));
 
+  app.enableCors({
+    origin: [/^(.*)/],
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+    preflightContinue: false,
+    optionsSuccessStatus: 204,
+  });
+
   // Swagger
   const SWAGGER_PATH = GLOBAL_API_PREFIX + '/api-docs';
 

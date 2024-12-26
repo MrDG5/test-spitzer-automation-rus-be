@@ -15,6 +15,7 @@ import { AuthModule } from './auth/auth.module';
 import { JwtGuard } from './auth/guards/jwt.guard';
 import { RolesGuard } from './auth/guards/roles.guard';
 import secretConfig from './config/secret.config';
+import { MigrationService } from './db/migration.service';
 
 @Module({
   imports: [
@@ -49,6 +50,7 @@ import secretConfig from './config/secret.config';
       provide: APP_GUARD,
       useClass: RolesGuard,
     },
+    MigrationService,
   ],
 })
 export class AppModule {}

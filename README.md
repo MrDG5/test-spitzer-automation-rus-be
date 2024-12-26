@@ -28,7 +28,7 @@ $ pnpm migration:generate ./src/db/migrations/<snapshot_name>
 $ pnpm migration:run
 ```
 
-## Docker deploy
+## Docker local deploy
 ```bash
 # to run app in container with db
 $ docker compose up --build
@@ -38,6 +38,10 @@ $ docker compose up --build
 # to stop db and app container
 $ docker compose up --build
 ```
+
+# Railway Deoply
+Данное приложение развёрнуто на бесплатном хостинге.
+Вы можете получить доступ к сервису по ссылке на [swagger](https://test-spitzer-automation-rus-be-production.up.railway.app/api/api-docs)
 
 ## Первый запуск (login)
 Чтобы авторизироваться можно использовать данную учётку:

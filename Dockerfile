@@ -26,4 +26,4 @@ COPY . .
 
 RUN  pnpm build
 
-CMD ["sh", "-c", "pnpm migration:run && pnpm start:prod"]
+CMD ["pnpm", "start:prod"]

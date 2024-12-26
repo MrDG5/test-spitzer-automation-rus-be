@@ -20,7 +20,7 @@ import secretConfig from './config/secret.config';
   imports: [
     ConfigModule.forRoot({
       cache: false,
-      envFilePath: '.env',
+      envFilePath: process.env.NODE_ENV === 'development' ? '.env' : undefined, // railway.NODE_ENV = "production"
       isGlobal: true,
       load: [appConfig, dbConfig, secretConfig],
     }),

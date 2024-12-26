@@ -43,6 +43,14 @@ class EnvironmentVariblesValidator {
 }
 
 export default registerAs<AppConfig>('app', (): AppConfig => {
+  console.log(
+    '-------------------------ENVIRONMENT VARIABLES-------------------------',
+  );
+  console.log(process.env);
+  console.log(
+    '-------------------------ENVIRONMENT VARIABLES-------------------------',
+  );
+
   const validateEnv = validateConfig(process.env, EnvironmentVariblesValidator);
 
   return {
